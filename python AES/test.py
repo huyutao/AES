@@ -6,15 +6,16 @@ a.print_key()
 
 
 #### round const
-# round_const = [0x00,0x01]
-# a = 0x01
-# for i in range(30):
-#     a = a*0x02
-#     if a > 0xff:
-#         a = a^0b100011011
-#     round_const.append(a)
-# np.set_printoptions(formatter={'int': hex})
-# print(np.array(round_const))
+
+round_const = [0x00,0x01]
+a = 0x01
+for i in range(30):
+    a = a*0x02
+    if a > 0xff:
+        a = a^0b100011011
+    round_const.append(a)
+np.set_printoptions(formatter={'int': hex})
+print(np.array(round_const))
 
 
 # array = [[0 for x in range(4)] for y in range(4)]
