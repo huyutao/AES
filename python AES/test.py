@@ -1,21 +1,23 @@
 from AES import AES
 import numpy as np
 
-a = AES(0x2b7e151628aed2a6abf7158809cf4f3c)
+a = AES(0x000102030405060708090a0b0c0d0e0f)
 a.print_key()
+encriped = a.encript(0x000102030405060708090a0b0c0d0e0f)
+print(encriped)
 
 
 #### round const
 
-round_const = [0x00,0x01]
-a = 0x01
-for i in range(30):
-    a = a*0x02
-    if a > 0xff:
-        a = a^0b100011011
-    round_const.append(a)
-np.set_printoptions(formatter={'int': hex})
-print(np.array(round_const))
+# round_const = [0x00,0x01]
+# a = 0x01
+# for i in range(30):
+#     a = a*0x02
+#     if a > 0xff:
+#         a = a^0b100011011
+#     round_const.append(a)
+# np.set_printoptions(formatter={'int': hex})
+# print(np.array(round_const))
 
 
 # array = [[0 for x in range(4)] for y in range(4)]

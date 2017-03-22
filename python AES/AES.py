@@ -149,8 +149,18 @@ class AES:
         for i in range(4):
             self.__mix_a_columns(s[i])
 
-    def encript(self,text):
-        pass
+    def encript(self,data_text):
+        self.data = text2matrix(data_text)
+        self.__add_round_key(self.data,self.round_keys[:4])
+        for i in range(1,10):
+            self.__sub_bytes(self.data)
+            self.__shift_row(self.data)
+            self.__mix_columns(self.data)
+            self.__add_round_key(self.data,self.round_keys[4*i:4*i+4])
+        self.__sub_bytes(self.data)
+        self.__shift_row(self.data)
+        self.__add_round_key(self.data, self.round_keys[40:])
+        return self.data
 
     def print_key(self):
         np.set_printoptions(formatter={'int': hex})
