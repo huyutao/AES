@@ -1,11 +1,11 @@
 from AES import AES
 import numpy as np
 
-a = AES(0x000102030405060708090a0b0c0d0e0f)
-a.print_key()
-encriped = a.encript(0x000102030405060708090a0b0c0d0e0f)
+a = AES(0x2b7e151628aed2a6abf7158809cf4f3c)
+#a.print_key()
+encriped = a.encript(0x3243f6a8885a308d313198a2e0370734)
 print(encriped)
-
+#print(list(range(9,0,-1)))
 
 #### round const
 
