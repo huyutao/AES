@@ -6,9 +6,10 @@ a = AES(0x2b7e151628aed2a6abf7158809cf4f3c)
 #a.print_key()
 
 encriped = a.encript(0x3243f6a8885a308d313198a2e0370734)
-a.print_data()
+print(encriped)
+decriped = a.decript(encriped)
 #print(list(range(9,0,-1)))
-#print(0x28^0xa0)
+#print(0xd0^0x39)
 #### round const
 
 # round_const = [0x00,0x01]

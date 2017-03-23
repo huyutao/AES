@@ -129,7 +129,6 @@ class AES:
         self.round_keys = text2matrix(master_key)
 
         ### generate round key
-
         for i in range(4,44):
             self.round_keys.append([])
             if i % 4 == 0:
@@ -171,28 +170,54 @@ class AES:
 
     def encript(self,data_text):
         self.data = text2matrix(data_text)
-        print("original_data")
-        self.print_data()
         self.__add_round_key(self.data,self.round_keys[:4])
-        print("add_round_key")
-        self.print_data()
         for i in range(1,10):
             self.__sub_bytes(self.data)
-            print("sub_byte{}".format(i))
-            self.print_data()
             self.__shift_row(self.data)
-            print("shift_row{}".format(i))
-            self.print_data()
             self.__mix_columns(self.data)
-            print("mix_columns{}".format(i))
-            self.print_data()
             self.__add_round_key(self.data,self.round_keys[4*i:4*i+4])
-            print("add_round_key{}".format(i))
-            self.print_data()
         self.__sub_bytes(self.data)
         self.__shift_row(self.data)
         self.__add_round_key(self.data, self.round_keys[40:])
-        return self.data
+        return matrix2text(self.data)
+
+    def decript(self,data_text):
+        self.data = text2matrix(data_text)
+        self.print_data()
+        self.__add_round_key(self.data, self.round_keys[40:])
+        print("add_round_key")
+        self.print_data()
+        self.__inv_shift_row(self.data)
+        print("inv_shift_row")
+        self.print_data()
+        self.__inv_sub_bytes(self.data)
+        print("inv_sub_bytes")
+        self.print_data()
+        for i in range(9,0,-1):
+            self.__add_round_key(self.data, self.round_keys[i*4:i*4+4])
+            self.__inv_mix_columns(self.data)
+            self.__inv_shift_row(self.data)
+            self.__inv_sub_bytes(self.data)
+        self.__add_round_key(self.data, self.round_keys[40:])
+        print("add_round_key")
+        self.print_data()
+
+
+    def __inv_sub_bytes(self,s):
+        for i in range(4):
+            for j in range(4):
+                s[i][j] = InvSbox[s[i][j]]
+
+    def __inv_shift_row(self, s):
+        s[1][1], s[2][1], s[3][1], s[0][1] = s[0][1], s[1][1], s[2][1], s[3][1]
+        s[2][2], s[3][2], s[0][2], s[1][2] = s[0][2], s[1][2], s[2][2], s[3][2]
+        s[3][3], s[0][3], s[1][3], s[2][3] = s[0][3], s[1][3], s[2][3], s[3][3]
+
+    def __inv_mix_columns(self,s):
+        for i in range(4):
+            pass
+
+
 
 
 
@@ -203,13 +228,3 @@ class AES:
     def print_data(self):
         np.set_printoptions(formatter={'int': hex})
         print(np.array(rotate(self.data)))
-
-    def __inv_sub_bytes(self,s):
-        for i in range(4):
-            for j in range(4):
-                s[i][j] = InvSbox[s[i][j]]
-
-    def __inv_shift_row(self, s):
-        pass
-
-
