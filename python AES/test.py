@@ -11,7 +11,6 @@ decriped = a.decript(encriped)
 #print(list(range(9,0,-1)))
 #print(0xd0^0x39)
 #### round const
-
 # round_const = [0x00,0x01]
 # a = 0x01
 # for i in range(30):
