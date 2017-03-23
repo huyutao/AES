@@ -111,6 +111,15 @@ def matrix2text(matrix):
             text |= matrix[i][j] << 120 - 8 * (4 * i + j)
     return text
 
+
+def rotate(old_matrix):
+    new_matrix = [[0 for x in range(4)] for y in range(4)]
+    for i in range(4):
+        for j in range(4):
+            new_matrix[i][j] = old_matrix[j][i]
+    return new_matrix
+
+
 class AES:
     def __init__(self,master_key):
         self.change_key(master_key)
@@ -120,6 +129,7 @@ class AES:
         self.round_keys = text2matrix(master_key)
 
         ### generate round key
+
         for i in range(4,44):
             self.round_keys.append([])
             if i % 4 == 0:
@@ -130,7 +140,7 @@ class AES:
                     self.round_keys[i].append(byte)
             else:
                 for j in range(4):
-                    byte = self.round_keys[i - 4][j] ^ Sbox[self.round_keys[i - 1][j]]
+                    byte = self.round_keys[i - 4][j] ^ self.round_keys[i - 1][j]
                     self.round_keys[i].append(byte)
 
     def __add_round_key(self,s,k):
@@ -161,26 +171,30 @@ class AES:
 
     def encript(self,data_text):
         self.data = text2matrix(data_text)
+        print("original_data")
         self.print_data()
         self.__add_round_key(self.data,self.round_keys[:4])
         print("add_round_key")
         self.print_data()
         for i in range(1,10):
             self.__sub_bytes(self.data)
-            print("sub_byte")
+            print("sub_byte{}".format(i))
             self.print_data()
             self.__shift_row(self.data)
-            print("shift_row")
+            print("shift_row{}".format(i))
             self.print_data()
             self.__mix_columns(self.data)
-            print("mix_columns")
+            print("mix_columns{}".format(i))
             self.print_data()
             self.__add_round_key(self.data,self.round_keys[4*i:4*i+4])
+            print("add_round_key{}".format(i))
             self.print_data()
         self.__sub_bytes(self.data)
         self.__shift_row(self.data)
         self.__add_round_key(self.data, self.round_keys[40:])
         return self.data
+
+
 
     def print_key(self):
         np.set_printoptions(formatter={'int': hex})
@@ -188,7 +202,7 @@ class AES:
 
     def print_data(self):
         np.set_printoptions(formatter={'int': hex})
-        print(np.array(self.data))
+        print(np.array(rotate(self.data)))
 
     def __inv_sub_bytes(self,s):
         for i in range(4):
